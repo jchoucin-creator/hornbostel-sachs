@@ -1,0 +1,323 @@
+
+<h2 class="sr-only">Instrument d'estudi interactiu: classificació Hornbostel & Sachs. Explora les cinc famílies d'instruments musicals.</h2>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-sans);}
+.wrap{padding:1.5rem 0;}
+.header{text-align:center;margin-bottom:1.5rem;}
+.header h1{font-size:20px;font-weight:500;color:var(--color-text-primary);}
+.header p{font-size:14px;color:var(--color-text-secondary);margin-top:4px;}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:1.5rem;}
+.tab-btn{border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);padding:6px 14px;border-radius:var(--border-radius-md);font-size:13px;cursor:pointer;transition:all 0.15s;}
+.tab-btn:hover{background:var(--color-background-primary);color:var(--color-text-primary);}
+.tab-btn.active{background:var(--color-background-primary);border-color:var(--color-border-primary);color:var(--color-text-primary);font-weight:500;}
+.panel{display:none;}
+.panel.active{display:block;}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:1rem;}
+.fam-header{display:flex;align-items:center;gap:12px;margin-bottom:1rem;}
+.fam-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.fam-title{font-size:18px;font-weight:500;color:var(--color-text-primary);}
+.fam-year{font-size:12px;color:var(--color-text-secondary);}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem;}
+.info-box{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;}
+.info-label{font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;font-weight:500;}
+.info-val{font-size:14px;color:var(--color-text-primary);line-height:1.5;}
+.subtypes{margin-bottom:1rem;}
+.subtypes h3{font-size:13px;font-weight:500;color:var(--color-text-secondary);margin-bottom:8px;}
+.subtype-row{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-top:0.5px solid var(--color-border-tertiary);}
+.subtype-row:first-of-type{border-top:none;}
+.st-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.st-name{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px;}
+.st-desc{font-size:12px;color:var(--color-text-secondary);line-height:1.5;}
+.examples{display:flex;flex-wrap:wrap;gap:6px;}
+.ex-pill{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--color-text-primary);}
+.quiz-section{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:1rem;margin-top:1rem;}
+.quiz-q{font-size:14px;color:var(--color-text-primary);margin-bottom:10px;font-weight:500;}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.quiz-opt{border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);padding:8px 10px;border-radius:var(--border-radius-md);font-size:13px;cursor:pointer;text-align:left;color:var(--color-text-primary);transition:all .15s;}
+.quiz-opt:hover{background:var(--color-background-secondary);}
+.quiz-opt.correct{background:#EAF3DE;border-color:#639922;color:#3B6D11;}
+.quiz-opt.wrong{background:#FCEBEB;border-color:#A32D2D;color:#791F1F;}
+.quiz-feedback{font-size:13px;margin-top:8px;color:var(--color-text-secondary);min-height:18px;}
+.quiz-next{margin-top:10px;font-size:13px;}
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:1.5rem;}
+.ov-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem;text-align:center;cursor:pointer;transition:all .15s;}
+.ov-card:hover{border-color:var(--color-border-primary);}
+.ov-icon{font-size:28px;margin-bottom:8px;}
+.ov-name{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px;}
+.ov-what{font-size:11px;color:var(--color-text-secondary);line-height:1.4;}
+.score-bar{display:flex;align-items:center;gap:10px;margin-bottom:1rem;}
+.score-label{font-size:13px;color:var(--color-text-secondary);}
+.score-val{font-size:16px;font-weight:500;color:var(--color-text-primary);}
+</style>
+<div class="wrap">
+<div class="header">
+  <h1>Hornbostel & Sachs — Les cinc famílies</h1>
+  <p>Explora cada família, aprèn com vibra i posa't a prova</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('overview')">Visió general</button>
+  <button class="tab-btn" onclick="showTab('cord')">Cordòfons</button>
+  <button class="tab-btn" onclick="showTab('aero')">Aeròfons</button>
+  <button class="tab-btn" onclick="showTab('mem')">Membranòfons</button>
+  <button class="tab-btn" onclick="showTab('idio')">Idiòfons</button>
+  <button class="tab-btn" onclick="showTab('elec')">Electròfons</button>
+  <button class="tab-btn" onclick="showTab('quiz')">Repàs</button>
+</div>
+
+<div id="tab-overview" class="panel active">
+  <div class="overview-grid">
+    <div class="ov-card" onclick="showTab('cord')">
+      <div class="ov-icon">🎻</div>
+      <div class="ov-name">Cordòfons</div>
+      <div class="ov-what">Vibra una corda tensada</div>
+    </div>
+    <div class="ov-card" onclick="showTab('aero')">
+      <div class="ov-icon">🎺</div>
+      <div class="ov-name">Aeròfons</div>
+      <div class="ov-what">Vibra una columna d'aire</div>
+    </div>
+    <div class="ov-card" onclick="showTab('mem')">
+      <div class="ov-icon">🥁</div>
+      <div class="ov-name">Membranòfons</div>
+      <div class="ov-what">Vibra una membrana</div>
+    </div>
+    <div class="ov-card" onclick="showTab('idio')">
+      <div class="ov-icon">🪘</div>
+      <div class="ov-name">Idiòfons</div>
+      <div class="ov-what">Vibra el propi cos</div>
+    </div>
+    <div class="ov-card" onclick="showTab('elec')">
+      <div class="ov-icon">🎹</div>
+      <div class="ov-name">Electròfons</div>
+      <div class="ov-what">So elèctric o amplificat</div>
+    </div>
+  </div>
+  <div class="card" style="border-left:3px solid #888780;">
+    <div class="info-label" style="margin-bottom:8px;">Sobre el sistema</div>
+    <p style="font-size:14px;color:var(--color-text-secondary);line-height:1.7;">Erich von Hornbostel i Curt Sachs van crear el 1914 un sistema universal per classificar instruments. El criteri no és el material ni la forma, sinó <strong style="font-weight:500;color:var(--color-text-primary);">com es produeix el so</strong>: quin element vibra i com es fa vibrar. El 1940 s'hi va afegir la família dels electròfons.</p>
+  </div>
+</div>
+
+<div id="tab-cord" class="panel">
+  <div class="card">
+    <div class="fam-header">
+      <div class="fam-icon" style="background:#EAF3DE;">🎸</div>
+      <div><div class="fam-title">Cordòfons</div><div class="fam-year">H&S, 1914</div></div>
+    </div>
+    <div class="info-grid">
+      <div class="info-box">
+        <div class="info-label">Què vibra?</div>
+        <div class="info-val">Una o més cordes tensades entre dos punts</div>
+      </div>
+      <div class="info-box">
+        <div class="info-label">Tipus bàsics</div>
+        <div class="info-val">Simples (cítares) i compostos (amb mànec)</div>
+      </div>
+    </div>
+    <div class="subtypes">
+      <h3>Com es fa vibrar la corda?</h3>
+      <div class="subtype-row"><div class="st-dot" style="background:#639922;"></div><div><div class="st-name">Puntejant</div><div class="st-desc">Es polsa la corda amb els dits o un plectre (arpa, guitarra, llaüt)</div></div></div>
+      <div class="subtype-row"><div class="st-dot" style="background:#639922;"></div><div><div class="st-name">Fregant</div><div class="st-desc">Un arc frega les cordes per fer-les vibrar (violí, viola, violoncel, contrabaix)</div></div></div>
+      <div class="subtype-row"><div class="st-dot" style="background:#639922;"></div><div><div class="st-name">Percudint</div><div class="st-desc">Un martell colpeja la corda (piano)</div></div></div>
+    </div>
+    <div class="info-label" style="margin-bottom:8px;">Exemples</div>
+    <div class="examples">
+      <span class="ex-pill">Guitarra</span><span class="ex-pill">Violí</span><span class="ex-pill">Arpa</span><span class="ex-pill">Piano</span><span class="ex-pill">Llaüt</span><span class="ex-pill">Violoncel</span><span class="ex-pill">Salteri</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab-aero" class="panel">
+  <div class="card">
+    <div class="fam-header">
+      <div class="fam-icon" style="background:#E6F1FB;">🎷</div>
+      <div><div class="fam-title">Aeròfons</div><div class="fam-year">H&S, 1914</div></div>
+    </div>
+    <div class="info-grid">
+      <div class="info-box">
+        <div class="info-label">Què vibra?</div>
+        <div class="info-val">Una columna d'aire (lliure o dins un tub)</div>
+      </div>
+      <div class="info-box">
+        <div class="info-label">Tipus</div>
+        <div class="info-val">Lliures (harmònica) i "de vent" (tub)</div>
+      </div>
+    </div>
+    <div class="subtypes">
+      <h3>Com es fa vibrar l'aire?</h3>
+      <div class="subtype-row"><div class="st-dot" style="background:#185FA5;"></div><div><div class="st-name">Bisell</div><div class="st-desc">L'aire xoca contra una aresta tallant (flautes, flauta de bec)</div></div></div>
+      <div class="subtype-row"><div class="st-dot" style="background:#185FA5;"></div><div><div class="st-name">Llengüeta simple</div><div class="st-desc">Una canya sola vibra (clarinet, saxòfon)</div></div></div>
+      <div class="subtype-row"><div class="st-dot" style="background:#185FA5;"></div><div><div class="st-name">Llengüeta doble</div><div class="st-desc">Dues canyes xoquen entre si (oboè, fagot)</div></div></div>
+      <div class="subtype-row"><div class="st-dot" style="background:#185FA5;"></div><div><div class="st-name">Broquet</div><div class="st-desc">Vibren els llavis de l'intèrpret (trompeta, trompa, trombó)</div></div></div>
+    </div>
+    <div class="info-label" style="margin-bottom:8px;">Exemples</div>
+    <div class="examples">
+      <span class="ex-pill">Flauta travessera</span><span class="ex-pill">Clarinet</span><span class="ex-pill">Oboè</span><span class="ex-pill">Trompeta</span><span class="ex-pill">Harmònica</span><span class="ex-pill">Acordió</span><span class="ex-pill">Sac de gemecs</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab-mem" class="panel">
+  <div class="card">
+    <div class="fam-header">
+      <div class="fam-icon" style="background:#FAEEDA;">🥁</div>
+      <div><div class="fam-title">Membranòfons</div><div class="fam-year">H&S, 1914</div></div>
+    </div>
+    <div class="info-grid">
+      <div class="info-box">
+        <div class="info-label">Què vibra?</div>
+        <div class="info-val">Una membrana (pell o plàstic) estirada i tensada</div>
+      </div>
+      <div class="info-box">
+        <div class="info-label">Material</div>
+        <div class="info-val">Pell animal o plàstic tensada sobre una obertura</div>
+      </div>
+    </div>
+    <div class="subtypes">
+      <h3>Com es fa vibrar la membrana?</h3>
+      <div class="subtype-row"><div class="st-dot" style="background:#BA7517;"></div><div><div class="st-name">Percudint</div><div class="st-desc">Colpejant amb la mà o baquetes (timbales, tambor, caixa, bongos)</div></div></div>
+      <div class="subtype-row"><div class="st-dot" style="background:#BA7517;"></div><div><div class="st-name">Puntejant</div><div class="st-desc">Una corda lligada a la membrana que, en ser polsada, la fa vibrar</div></div></div>
+      <div class="subtype-row"><div class="st-dot" style="background:#BA7517;"></div><div><div class="st-name">Fregant</div><div class="st-desc">La membrana o una vareta en contacte (ximbomba)</div></div></div>
+      <div class="subtype-row"><div class="st-dot" style="background:#BA7517;"></div><div><div class="st-name">Mirlitons</div><div class="st-desc">La membrana vibra per ressonància de la veu humana (kazoo)</div></div></div>
+    </div>
+    <div class="info-label" style="margin-bottom:8px;">Exemples</div>
+    <div class="examples">
+      <span class="ex-pill">Timbales</span><span class="ex-pill">Tambor</span><span class="ex-pill">Bongos</span><span class="ex-pill">Djembé</span><span class="ex-pill">Ximbomba</span><span class="ex-pill">Kazoo</span><span class="ex-pill">Caixa</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab-idio" class="panel">
+  <div class="card">
+    <div class="fam-header">
+      <div class="fam-icon" style="background:#FAECE7;">🪗</div>
+      <div><div class="fam-title">Idiòfons</div><div class="fam-year">H&S, 1914</div></div>
+    </div>
+    <div class="info-grid">
+      <div class="info-box">
+        <div class="info-label">Què vibra?</div>
+        <div class="info-val">El propi cos sòlid de l'instrument</div>
+      </div>
+      <div class="info-box">
+        <div class="info-label">Peculiaritat</div>
+        <div class="info-val">Família més nombrosa i diversa del món</div>
+      </div>
+    </div>
+    <div class="subtypes">
+      <h3>Com es fa vibrar el cos?</h3>
+      <div class="subtype-row"><div class="st-dot" style="background:#993C1D;"></div><div><div class="st-name">Percudint</div><div class="st-desc">Baquetes, maces o xocant entre si (xilòfon, plats, triangle, marimba)</div></div></div>
+      <div class="subtype-row"><div class="st-dot" style="background:#993C1D;"></div><div><div class="st-name">Puntejant</div><div class="st-desc">Una lamela metàl·lica es polsa (guimbarda, kalimba)</div></div></div>
+      <div class="subtype-row"><div class="st-dot" style="background:#993C1D;"></div><div><div class="st-name">Fregant</div><div class="st-desc">Un objecte frega el cos (harmònica de vidre, bol tibetà)</div></div></div>
+      <div class="subtype-row"><div class="st-dot" style="background:#993C1D;"></div><div><div class="st-name">Sacsejant</div><div class="st-desc">Parts internes xoquen entre si (maraques, cascavells)</div></div></div>
+    </div>
+    <div class="info-label" style="margin-bottom:8px;">Exemples</div>
+    <div class="examples">
+      <span class="ex-pill">Xilòfon</span><span class="ex-pill">Marimba</span><span class="ex-pill">Plats</span><span class="ex-pill">Maraques</span><span class="ex-pill">Guimbarda</span><span class="ex-pill">Kalimba</span><span class="ex-pill">Triangle</span><span class="ex-pill">Cascavells</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab-elec" class="panel">
+  <div class="card">
+    <div class="fam-header">
+      <div class="fam-icon" style="background:#EEEDFE;">🎛️</div>
+      <div><div class="fam-title">Electròfons</div><div class="fam-year">H&S, 1940</div></div>
+    </div>
+    <div class="info-grid">
+      <div class="info-box">
+        <div class="info-label">Què vibra?</div>
+        <div class="info-val">Oscil·ladors electrònics o so amplificat elèctricament</div>
+      </div>
+      <div class="info-box">
+        <div class="info-label">Afegit</div>
+        <div class="info-val">Categoria incorporada el 1940, la més recent</div>
+      </div>
+    </div>
+    <div class="subtypes">
+      <h3>Subtipus</h3>
+      <div class="subtype-row"><div class="st-dot" style="background:#534AB7;"></div><div><div class="st-name">Radioelèctrics</div><div class="st-desc">El so es crea totalment de forma elèctrica, sense element mecànic (sintetitzador)</div></div></div>
+      <div class="subtype-row"><div class="st-dot" style="background:#534AB7;"></div><div><div class="st-name">Electromecànics</div><div class="st-desc">Un element mecànic vibra i es transforma en senyal elèctric (orgue Hammond)</div></div></div>
+      <div class="subtype-row"><div class="st-dot" style="background:#534AB7;"></div><div><div class="st-name">Electroacústics</div><div class="st-desc">Un instrument acústic s'amplifica elèctricament (guitarra elèctrica)</div></div></div>
+    </div>
+    <div class="info-label" style="margin-bottom:8px;">Exemples</div>
+    <div class="examples">
+      <span class="ex-pill">Sintetitzador</span><span class="ex-pill">Guitarra elèctrica</span><span class="ex-pill">Orgue Hammond</span><span class="ex-pill">Theremin</span><span class="ex-pill">Baix elèctric</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab-quiz" class="panel">
+  <div class="score-bar">
+    <span class="score-label">Encerts:</span>
+    <span class="score-val" id="score-display">0 / 0</span>
+  </div>
+  <div class="card" id="quiz-card">
+    <div class="quiz-q" id="quiz-question">Carregant pregunta...</div>
+    <div class="quiz-opts" id="quiz-opts"></div>
+    <div class="quiz-feedback" id="quiz-feedback"></div>
+    <div class="quiz-next" id="quiz-next-wrap" style="display:none;">
+      <button onclick="nextQuestion()" style="font-size:13px;">Següent pregunta →</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+function showTab(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  const btns=document.querySelectorAll('.tab-btn');
+  const map={overview:0,cord:1,aero:2,mem:3,idio:4,elec:5,quiz:6};
+  btns[map[id]].classList.add('active');
+  if(id==='quiz') loadQuestion();
+}
+
+const questions=[
+  {q:'La guitarra és un...', opts:['Cordòfon','Aeròfon','Idiòfon','Membranòfon'], ans:0, exp:'Les cordes vibren en ser polsades.'},
+  {q:'En un clarinet, que vibra per produir el so?', opts:['La boca del músic','Una llengüeta simple','El propi tub','Un bisell'], ans:1, exp:'El clarinet té una llengüeta simple que vibra en ser bufada.'},
+  {q:'Les maraques pertanyen a la família...', opts:['Membranòfons','Cordòfons','Idiòfons','Electròfons'], ans:2, exp:'Les parts internes sacsegen i fan vibrar el propi cos de l\'instrument.'},
+  {q:'En quina família posaries el piano?', opts:['Aeròfon','Cordòfon percudint','Membranòfon','Electròfon'], ans:1, exp:'Els martells colpegen les cordes: cordòfon percudint.'},
+  {q:'La ximbomba és un...', opts:['Idiòfon','Aeròfon','Membranòfon','Cordòfon'], ans:2, exp:'Una vareta frega la membrana estirada, fent-la vibrar.'},
+  {q:'L\'orgue Hammond pertany als...', opts:['Radioelèctrics','Electromecànics','Electroacústics','Aeròfons'], ans:1, exp:'Té un element mecànic que genera vibracions transformades en senyal elèctric.'},
+  {q:'Quina família va ser afegida el 1940?', opts:['Idiòfons','Membranòfons','Cordòfons','Electròfons'], ans:3, exp:'Els electròfons van ser incorporats el 1940 per Sachs.'},
+  {q:'Un bisell fa vibrar...', opts:['Una membrana','Una columna d\'aire','Les cordes','El cos metàl·lic'], ans:1, exp:'L\'aire xoca contra el bisell i crea una columna d\'aire vibrant (flautes).'},
+  {q:'El criteris de classificació H&S es basa en...', opts:['El material','La forma de l\'instrument','Com es produeix el so','El país d\'origen'], ans:2, exp:'El criteri és sempre el mecanisme de producció del so.'},
+  {q:'Un sintetitzador és un...', opts:['Electromecànic','Electroacústic','Radioelèctric','Cordòfon'], ans:2, exp:'El so es crea totalment de forma elèctrica, sense element mecànic.'},
+  {q:'El violoncel fa sonar les cordes...', opts:['Percudint','Puntejant','Fregant','Bufant'], ans:2, exp:'L\'arc frega les cordes, fent-les vibrar contínuament.'},
+  {q:'El kazoo és un tipus de...', opts:['Idiòfon','Aeròfon bisell','Membranòfon mirliton','Electròfon'], ans:2, exp:'La membrana vibra per ressonància de la veu humana.'},
+];
+
+let current=-1, score=0, total=0, answered=false;
+function loadQuestion(){
+  current=(current+1)%questions.length;
+  answered=false;
+  const q=questions[current];
+  document.getElementById('quiz-question').textContent=q.q;
+  const opts=document.getElementById('quiz-opts');
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='quiz-opt';
+    b.textContent=o;
+    b.onclick=()=>checkAnswer(i);
+    opts.appendChild(b);
+  });
+  document.getElementById('quiz-feedback').textContent='';
+  document.getElementById('quiz-next-wrap').style.display='none';
+}
+function checkAnswer(i){
+  if(answered) return;
+  answered=true;
+  const q=questions[current];
+  const btns=document.querySelectorAll('.quiz-opt');
+  total++;
+  if(i===q.ans){score++;btns[i].classList.add('correct');document.getElementById('quiz-feedback').textContent='✓ Correcte! '+q.exp;}
+  else{btns[i].classList.add('wrong');btns[q.ans].classList.add('correct');document.getElementById('quiz-feedback').textContent='✗ '+q.exp;}
+  document.getElementById('score-display').textContent=score+' / '+total;
+  document.getElementById('quiz-next-wrap').style.display='block';
+}
+function nextQuestion(){loadQuestion();}
+</script>
