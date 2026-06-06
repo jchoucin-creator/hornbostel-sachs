@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escala de rangs · Expedició Sonora H&S</title>
+<style>
+  :root{
+    --bg:#0f1320; --bg2:#161c2e; --panel:#1c2336; --panel2:#232c44;
+    --ink:#eef1f8; --muted:#9aa6c4; --line:#2e3852;
+    --gold:#e8b84b; --gold-d:#b88a1f;
+    --radius:16px; --radius-s:10px;
+    --font:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  }
+  body.light{
+    --bg:#f4f1e8; --bg2:#ece7d8; --panel:#ffffff; --panel2:#f7f4ec;
+    --ink:#23282f; --muted:#5f6470; --line:#dad3c2;
+    --gold:#b88a1f; --gold-d:#8a6712;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:var(--font); background:var(--bg); color:var(--ink);
+    min-height:100vh; line-height:1.6;
+    background-image:radial-gradient(circle at 12% 18%, rgba(63,200,160,.12), transparent 42%),
+                     radial-gradient(circle at 88% 12%, rgba(232,184,75,.10), transparent 40%),
+                     radial-gradient(circle at 50% 100%, rgba(63,200,160,.08), transparent 50%);
+    background-attachment:fixed;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:18px 16px 60px;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:bold;letter-spacing:.5px;}
+  .brand .badge{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--gold),var(--gold-d));
+    display:flex;align-items:center;justify-content:center;color:#1a1206;font-weight:bold;font-size:18px;}
+  .brand small{display:block;font-weight:normal;color:var(--muted);letter-spacing:0;font-size:11px;}
+  .icon-btn{background:var(--panel);border:1px solid var(--line);color:var(--ink);
+    border-radius:9px;padding:7px 11px;cursor:pointer;font-size:13px;font-family:inherit;transition:.15s;}
+  .icon-btn:hover{border-color:var(--gold);}
+  .icon-btn:focus-visible{outline:3px solid #5aa9f0;outline-offset:2px;}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 24px;box-shadow:0 14px 40px rgba(0,0,0,.18);}
+  h1{font-size:25px;line-height:1.2;margin-bottom:8px;}
+  .lead{color:var(--muted);margin-bottom:6px;}
+
+  .progress-cue{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;margin:18px 0 14px;}
+  .progress-cue .arrow{font-size:18px;color:var(--gold);}
+
+  .stairs{display:flex;align-items:flex-end;gap:12px;}
+  .step{flex:1;border-radius:14px;padding:14px 12px 16px;display:flex;flex-direction:column;gap:8px;min-width:0;
+    transition:transform .15s;}
+  .step:hover{transform:translateY(-4px);}
+  .step .emo{font-size:26px;line-height:1;}
+  .step .rank{font-size:16px;font-weight:bold;}
+  .step .cue{font-size:12.5px;line-height:1.4;}
+
+  @media (max-width:560px){
+    .stairs{flex-direction:column;align-items:stretch;}
+    .step{height:auto!important;flex-direction:row;align-items:center;gap:12px;}
+    .step .emo{font-size:24px;}
+    .step .txt{display:flex;flex-direction:column;}
+  }
+
+  .note{margin-top:20px;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;}
+  .foot{text-align:center;color:var(--muted);font-size:12px;margin-top:22px;}
+</style>
+</head>
+<body class="dark">
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <span class="badge">H&S</span>
+      <span>Expedició Sonora<small>Museu Hornbostel &amp; Sachs · Els rangs</small></span>
+    </div>
+    <button class="icon-btn" id="themeBtn" aria-label="Canviar tema clar o fosc">🌙 Tema</button>
+  </div>
+
+  <div class="card">
+    <h1>🎼 Els rangs de l'expedició</h1>
+    <p class="lead">A mesura que superes les sales del museu, vas pujant de rang. Aquesta és l'escala que pots assolir: com més amunt arribes, més domines la classificació dels instruments.</p>
+
+    <div class="progress-cue">
+      <span class="arrow">↗</span>
+      <span>El teu progrés — de baix a dalt</span>
+    </div>
+
+    <div class="stairs" role="img" aria-label="Escala de quatre rangs ascendents: Primer contacte, Assaig, Intèrpret i Solista, de menys a més domini.">
+      <div class="step" style="height:108px;background:#E1F5EE;">
+        <span class="emo" aria-hidden="true">🎵</span>
+        <div class="txt">
+          <span class="rank" style="color:#0F6E56;">Primer contacte</span>
+          <span class="cue" style="color:#0F6E56;">Comences el viatge</span>
+        </div>
+      </div>
+      <div class="step" style="height:150px;background:#9FE1CB;">
+        <span class="emo" aria-hidden="true">🎶</span>
+        <div class="txt">
+          <span class="rank" style="color:#085041;">Assaig</span>
+          <span class="cue" style="color:#085041;">Vas agafant ritme</span>
+        </div>
+      </div>
+      <div class="step" style="height:194px;background:#5DCAA5;">
+        <span class="emo" aria-hidden="true">🎼</span>
+        <div class="txt">
+          <span class="rank" style="color:#04342C;">Intèrpret</span>
+          <span class="cue" style="color:#085041;">Toques amb seguretat</span>
+        </div>
+      </div>
+      <div class="step" style="height:238px;background:#1D9E75;">
+        <span class="emo" aria-hidden="true">🎤</span>
+        <div class="txt">
+          <span class="rank" style="color:#ffffff;">Solista</span>
+          <span class="cue" style="color:#E1F5EE;">Ho domines de cap a peus</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="note">💡 Quan acabis l'Expedició Sonora descobriràs quin rang has assolit. No et preocupis si comences a baix: cada sala que llegeixes amb atenció et fa pujar un graó.</p>
+  </div>
+
+  <p class="foot">Museu Sonor Hornbostel &amp; Sachs · Música · ESO</p>
+</div>
+
+<script>
+  document.getElementById("themeBtn").onclick=function(){
+    var light=document.body.classList.toggle("light");
+    document.body.classList.toggle("dark",!light);
+    this.textContent = light ? "☀️ Tema" : "🌙 Tema";
+  };
+</script>
+</body>
+</html>
