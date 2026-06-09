@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El meu assoliment · Expedició Sonora H&S</title>
+<style>
+  :root{
+    --bg:#0f1320; --bg2:#161c2e; --panel:#1c2336; --panel2:#232c44;
+    --ink:#eef1f8; --muted:#9aa6c4; --line:#2e3852;
+    --gold:#e8b84b; --gold-d:#b88a1f; --ok:#5fd08a; --bad:#ef6b6b;
+    --radius:16px; --radius-s:10px;
+    --font:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  }
+  body.light{
+    --bg:#f4f1e8; --bg2:#ece7d8; --panel:#ffffff; --panel2:#f7f4ec;
+    --ink:#23282f; --muted:#5f6470; --line:#dad3c2;
+    --gold:#b88a1f; --gold-d:#8a6712;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:var(--font); background:var(--bg); color:var(--ink);
+    min-height:100vh; line-height:1.6;
+    background-image:radial-gradient(circle at 12% 18%, rgba(63,200,160,.12), transparent 42%),
+                     radial-gradient(circle at 88% 12%, rgba(232,184,75,.10), transparent 40%),
+                     radial-gradient(circle at 50% 100%, rgba(63,200,160,.08), transparent 50%);
+    background-attachment:fixed;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:18px 16px 60px;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:bold;letter-spacing:.5px;}
+  .brand .badge{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--gold),var(--gold-d));
+    display:flex;align-items:center;justify-content:center;color:#1a1206;font-weight:bold;font-size:18px;}
+  .brand small{display:block;font-weight:normal;color:var(--muted);letter-spacing:0;font-size:11px;}
+  .icon-btn{background:var(--panel);border:1px solid var(--line);color:var(--ink);
+    border-radius:9px;padding:7px 11px;cursor:pointer;font-size:13px;font-family:inherit;transition:.15s;}
+  .icon-btn:hover{border-color:var(--gold);}
+  .icon-btn:focus-visible{outline:3px solid #5aa9f0;outline-offset:2px;}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 24px;box-shadow:0 14px 40px rgba(0,0,0,.18);}
+  h1{font-size:25px;line-height:1.2;margin-bottom:8px;}
+  .lead{color:var(--muted);margin-bottom:6px;}
+
+  .field{margin:18px 0 10px;}
+  label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px;}
+  input[type=text]{width:100%;padding:13px 14px;border-radius:var(--radius-s);
+    border:1px solid var(--line);background:var(--panel2);color:var(--ink);font-size:16px;font-family:inherit;
+    letter-spacing:1px;}
+  input[type=text]:focus-visible{outline:3px solid #5aa9f0;outline-offset:1px;border-color:#5aa9f0;}
+  .btn{display:inline-flex;align-items:center;gap:8px;justify-content:center;
+    background:linear-gradient(135deg,var(--gold),var(--gold-d));color:#1a1206;border:none;
+    padding:13px 22px;border-radius:var(--radius-s);font-weight:bold;font-size:15px;cursor:pointer;
+    font-family:inherit;transition:filter .12s,transform .12s;}
+  .btn:hover{filter:brightness(1.07);} .btn:active{transform:scale(.97);}
+  .btn:focus-visible{outline:3px solid #5aa9f0;outline-offset:2px;}
+
+  .err{color:var(--bad);font-size:14px;margin-top:10px;display:none;}
+
+  .result{display:none;margin-top:6px;}
+  .result.show{display:block;animation:fade .4s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .praise{background:var(--panel2);border:1px solid var(--ok);border-radius:var(--radius-s);
+    padding:16px 18px;margin:16px 0;}
+  .praise .big{font-size:34px;line-height:1;margin-bottom:6px;}
+  .praise h2{font-size:19px;margin-bottom:4px;}
+  .praise .who{font-size:12px;color:var(--muted);}
+  .praise .msg{font-size:14px;margin-top:6px;}
+
+  .scale-cue{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;margin:18px 0 12px;}
+  .scale-cue .arrow{font-size:18px;color:var(--gold);}
+  .stairs{display:flex;align-items:flex-end;gap:12px;}
+  .step{flex:1;border-radius:14px;padding:14px 12px 16px;display:flex;flex-direction:column;gap:8px;min-width:0;
+    position:relative;transition:transform .25s,box-shadow .25s,opacity .25s;}
+  .step .emo{font-size:24px;line-height:1;}
+  .step .rank{font-size:15px;font-weight:bold;}
+  .step .cue{font-size:12px;line-height:1.4;}
+  .step .here{display:none;position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+    background:var(--gold);color:#1a1206;font-size:11px;font-weight:bold;padding:2px 10px;border-radius:12px;white-space:nowrap;}
+  .step.you{transform:translateY(-10px);box-shadow:0 0 0 3px var(--gold),0 10px 26px rgba(0,0,0,.3);}
+  .step.you .here{display:block;}
+  .stairs.has-pick .step:not(.you){opacity:.55;}
+
+  @media (max-width:560px){
+    .stairs{flex-direction:column-reverse;align-items:stretch;}
+    .step{height:auto!important;flex-direction:row;align-items:center;gap:12px;}
+    .step.you{transform:none;}
+    .step .here{position:static;transform:none;margin-left:auto;}
+  }
+
+  .foot{text-align:center;color:var(--muted);font-size:12px;margin-top:22px;}
+</style>
+</head>
+<body class="dark">
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <span class="badge">H&S</span>
+      <span>Expedició Sonora<small>Museu Hornbostel &amp; Sachs · El meu assoliment</small></span>
+    </div>
+    <button class="icon-btn" id="themeBtn" aria-label="Canviar tema clar o fosc">🌙 Tema</button>
+  </div>
+
+  <div class="card">
+    <h1>🎼 On he arribat?</h1>
+    <p class="lead">Enganxa el codi de registre que vas obtenir en acabar l'Expedició Sonora i descobreix la teva posició a l'escala.</p>
+
+    <div class="field">
+      <label for="codeIn">El teu codi de registre</label>
+      <input type="text" id="codeIn" placeholder="HS-NOM-XXXXXXXX" autocomplete="off" spellcheck="false">
+    </div>
+    <button class="btn" id="goBtn">Veure el meu assoliment →</button>
+    <p class="err" id="err">Aquest codi no sembla vàlid. Comprova que l'has copiat sencer (comença per <b>HS-</b>).</p>
+
+    <div class="result" id="result">
+      <div class="praise">
+        <div class="big" id="praiseEmoji">🎉</div>
+        <h2 id="praiseTitle">Ben fet!</h2>
+        <div class="who" id="praiseWho"></div>
+        <div class="msg" id="praiseMsg"></div>
+      </div>
+
+      <div class="scale-cue">
+        <span class="arrow">↗</span>
+        <span>La teva posició a l'escala d'assoliment</span>
+      </div>
+
+      <div class="stairs" id="stairs" role="img" aria-label="Escala dels quatre rangs amb la teva posició marcada.">
+        <div class="step" data-rank="0" style="height:108px;background:#E1F5EE;">
+          <span class="here">ESTÀS AQUÍ</span>
+          <span class="emo" aria-hidden="true">🎵</span>
+          <span class="rank" style="color:#0F6E56;">Primer contacte</span>
+          <span class="cue" style="color:#0F6E56;">Comences el viatge</span>
+        </div>
+        <div class="step" data-rank="1" style="height:150px;background:#9FE1CB;">
+          <span class="here">ESTÀS AQUÍ</span>
+          <span class="emo" aria-hidden="true">🎶</span>
+          <span class="rank" style="color:#085041;">Assaig</span>
+          <span class="cue" style="color:#085041;">Vas agafant ritme</span>
+        </div>
+        <div class="step" data-rank="2" style="height:194px;background:#5DCAA5;">
+          <span class="here">ESTÀS AQUÍ</span>
+          <span class="emo" aria-hidden="true">🎼</span>
+          <span class="rank" style="color:#04342C;">Intèrpret</span>
+          <span class="cue" style="color:#085041;">Toques amb seguretat</span>
+        </div>
+        <div class="step" data-rank="3" style="height:238px;background:#1D9E75;">
+          <span class="here">ESTÀS AQUÍ</span>
+          <span class="emo" aria-hidden="true">🎤</span>
+          <span class="rank" style="color:#ffffff;">Solista</span>
+          <span class="cue" style="color:#E1F5EE;">Ho domines de cap a peus</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot">Museu Sonor Hornbostel &amp; Sachs · Música · ESO</p>
+</div>
+
+<script>
+/* ----- descodificació (mateix sistema que l'activitat) ----- */
+const SALT = 7349;
+function cleanName(raw){
+  return (raw||"").toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^A-Z0-9]/g,"").slice(0,14) || "ALUMNE";
+}
+function nameSeed(clean){let s=SALT;for(const c of clean)s=(s*31+c.charCodeAt(0))%100000;return s;}
+function decodeCode(code){
+  const m=(code||"").trim().toUpperCase().match(/^HS-([A-Z0-9]+)-([A-Z0-9]{8})$/);
+  if(!m) return {valid:false};
+  const clean=m[1], t=m[2], seed=nameSeed(clean), k=seed%97, d=t[1]+t[3]+t[5];
+  if(!/^[0-9]{3}$/.test(d)) return {valid:false};
+  const enc=parseInt(d,10);
+  if(enc<0||enc>100) return {valid:false};
+  const chk=(seed*131 + enc*977)%1296;
+  if(t.slice(6)!==chk.toString(36).toUpperCase().padStart(2,"0")) return {valid:false};
+  return {valid:true, name:clean, pct:((enc-k)%101+101)%101};
+}
+/* rang (0..3) i missatge positiu — sense mostrar la nota */
+function rankInfo(pct){
+  if(pct>=90) return {i:3, emoji:"🎤", title:"Ets tot un Solista!", msg:"Increïble! Domines la classificació de cap a peus. Has llegit i comprès tot el museu."};
+  if(pct>=70) return {i:2, emoji:"🎼", title:"Ja ets Intèrpret!", msg:"Molt bé! Tens els conceptes ben travats i toques amb seguretat. Ets a un pas de dalt de tot."};
+  if(pct>=50) return {i:1, emoji:"🎶", title:"Estàs en ple Assaig!", msg:"Bon treball! Vas pel bon camí. Amb una mica més de repàs de les fitxes arribaràs ben amunt."};
+  return {i:0, emoji:"🎵", title:"Primer contacte aconseguit!", msg:"Has fet el primer pas, i això ja és molt! Torna a llegir les sales amb calma: cada repàs et farà pujar un graó. Tu pots!"};
+}
+/* ----- noms bonics: MARIAPUIG -> Mariapuig ----- */
+function pretty(name){return name.charAt(0)+name.slice(1).toLowerCase();}
+
+const $=id=>document.getElementById(id);
+function reveal(){
+  const res=decodeCode($("codeIn").value);
+  if(!res.valid){
+    $("err").style.display="block";
+    $("result").classList.remove("show");
+    return;
+  }
+  $("err").style.display="none";
+  const r=rankInfo(res.pct);
+  $("praiseEmoji").textContent=r.emoji;
+  $("praiseTitle").textContent=r.title;
+  $("praiseWho").textContent="Codi verificat ✓ · registre de "+pretty(res.name);
+  $("praiseMsg").textContent=r.msg;
+  const stairs=$("stairs");
+  stairs.classList.add("has-pick");
+  [...stairs.querySelectorAll(".step")].forEach(s=>{
+    s.classList.toggle("you", +s.dataset.rank===r.i);
+  });
+  $("result").classList.add("show");
+  $("result").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+$("goBtn").onclick=reveal;
+$("codeIn").addEventListener("keydown",e=>{if(e.key==="Enter")reveal();});
+
+$("themeBtn").onclick=function(){
+  const light=document.body.classList.toggle("light");
+  document.body.classList.toggle("dark",!light);
+  this.textContent = light ? "☀️ Tema" : "🌙 Tema";
+};
+</script>
+</body>
+</html>
